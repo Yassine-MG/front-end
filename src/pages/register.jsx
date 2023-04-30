@@ -7,18 +7,29 @@ export default function Register() {
   const navigate = useNavigate();
   const[inputs,setInputs] = useState({});
   const [error, setError] = useState(null);
+  const [emailErrors,setEmailErrors] = useState(null);
   const handleChange = (event)=>{
     const name = event.target.name;
     const value = event.target.value;
     setInputs(values=>({...values,[name]:value}))
   }
-  const submitForm = ()=>{
+  const submitForm = () =>{
     http.post('/users',inputs).then((res)=>{
-      navigate('/');
+      console.log(res);
+      if(res.data.status === 200){
+        navigate('/');
+        setError(null);
+      }else if(res.data.status === 204){
+        const errors = res.data.errors;
+        console.log(errors);
+        const emailError =  errors.email || [];
+        setEmailErrors(emailError);
+        const passwordErrors = errors.password || [];
+        setError(passwordErrors);
+      }
     })
     .catch((error) => {
-      // Intercepter l'erreur ici et la stocker dans le state pour affichage
-      setError(error.response.data.message);
+        setError("Something went wrong.");
     });
   }
   return (
@@ -58,6 +69,11 @@ export default function Register() {
                 Email address
               </label>
               <div className="mt-2">
+              <ul>
+                    {emailErrors && emailErrors.map((msg) => (
+                      <li key={msg} className="text-red-500">{msg}</li>
+                      ))}
+                  </ul>
                 <input
                   id="email"
                   name="email"
@@ -77,7 +93,12 @@ export default function Register() {
                 </label>
               </div>
               <div className="mt-2">
-              {error && <span className="text-red-500">{error}</span>}
+                  <ul>
+                    {error && error.map((msg) => (
+                      <li key={msg} className="text-red-500">{msg}</li>
+                      ))}
+                  </ul>
+
                 <input
                   id="password"
                   name="password"

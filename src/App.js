@@ -11,7 +11,7 @@ function App() {
   return (
     <div className="a">
       <Navbar></Navbar>
-      <div class="container mx-auto">
+      <div className="container mx-auto">
           <Routes>
             <Route path='/' element={<Home/>}/>
             <Route path='/register' element={<Create/>}/>

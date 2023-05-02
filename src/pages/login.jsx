@@ -7,7 +7,7 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
   const [error, setError] = useState([]);
-  const [token,setToken] = useState("");
+  const [token,setToken] = useState([]);
   const handleSubmit = async (event)=>{
     event.preventDefault();
     await http.post('/auth', {email, password})
@@ -15,7 +15,10 @@ export default function Login() {
         console.log(response);
         if (response.status === 200) {
           setEmail("");
-          setPassword("");
+          setPassword();
+          console.log(response.data.access_token.tokenable_id);
+          document.cookie = `access_token=${response.data.access_token}; path=/; secure; http-only`;
+          setToken(response.data.access_token);
           navigate("/");
         } else if (response.status === 204) {
           console.log("error");
@@ -26,6 +29,7 @@ export default function Login() {
         setError(error.response.data.error);
         console.error(error.response.data.error);
       });
+      console.log(token);
   }
   return (
     <>

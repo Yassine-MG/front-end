@@ -1,19 +1,7 @@
-// import React from 'react';
-// import { Route, Navigate } from 'react-router-dom';
+import React from 'react'
 
-// function ProtectedRoute({ component: Component, isAuthenticated, ...rest }) {
-//     return (
-//             <Route
-//             {...rest}
-//             render={(props) =>
-//                 isAuthenticated ? (
-//                 <Navigate to="/" replace />
-//                 ) : (
-//                 <Component {...props} />
-//                 )
-//             }
-//             />
-//     );
-// }
-
-// export default ProtectedRoute;
+export default function ProtectedRoute() {
+  return (
+    <div>your are already logged</div>
+  )
+}

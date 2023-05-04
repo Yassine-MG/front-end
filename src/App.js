@@ -3,7 +3,7 @@ import './App.css';
 import Navbar from './components/Navbar/navbar';
 import { Routes,Route} from 'react-router-dom';
 import Home from './pages/home';
-import Create from './pages/register';
+import Register from './pages/register';
 import Login from './pages/login';
 // import ProtectedRoutes from './components/ProtectedRoutes/ProtectedRoute';
 function App() {
@@ -15,7 +15,7 @@ function App() {
       <div className="container mx-auto">
           <Routes>
             <Route path='/' element={<Home/>}/>
-            <Route path='/register' element={<Create/>}/>
+            <Route path='/register' element={<Register/>}/>
             <Route path='/login'  element={<Login/>} />
             {/* <Route path='/login'  element={ isAuthenticated ?<Home/> : <Login/>} /> */}
           </Routes>  

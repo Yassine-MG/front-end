@@ -5,10 +5,10 @@ import { Routes,Route} from 'react-router-dom';
 import Home from './pages/home';
 import Register from './pages/register';
 import Login from './pages/login';
-// import ProtectedRoutes from './components/ProtectedRoutes/ProtectedRoute';
-function App() {
-  // const [isAuthenticated, setIsAuthenticated] = useState(false);
- 
+import Profile from './pages/profile';
+import EditProfile from './pages/Editprofile';
+import FreelancerRegistration from './pages/FreelancerRegistration';
+function App() { 
   return (
     <div className="a">
       <Navbar></Navbar>
@@ -17,7 +17,9 @@ function App() {
             <Route path='/' element={<Home/>}/>
             <Route path='/register' element={<Register/>}/>
             <Route path='/login'  element={<Login/>} />
-            {/* <Route path='/login'  element={ isAuthenticated ?<Home/> : <Login/>} /> */}
+            <Route path='/profile' element={<Profile/>}/>
+            <Route path='/modif' element={<EditProfile/>}/>
+            <Route path='/register/freelancers' element={<FreelancerRegistration/>}/> 
           </Routes>  
       </div>
     </div>

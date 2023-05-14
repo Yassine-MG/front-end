@@ -7,7 +7,7 @@ import Cookies from 'js-cookie';
 import NavLinks from './navlinks'
 const Navbar = () => {
     const [open, setOpen] = useState(false);
-    const [isAuthenticated, setIsAuthenticated] = useState(false);
+    // const [isAuthenticated, setIsAuthenticated] = useState(false);
     const navigate = useNavigate();
 
         useEffect(() => {
@@ -20,7 +20,7 @@ const Navbar = () => {
                 });
                 // send a request to the server to check if the access token is valid
                 await instance.get("/checkauth");
-                    setIsAuthenticated(true); 
+                    // setIsAuthenticated(true); 
             } catch (err) {
                 // if the request is not successful, redirect the user to the login page
                 navigate("/login");
@@ -31,12 +31,17 @@ const Navbar = () => {
         });
 
         const handleLogout = async () => {
+            const token = Cookies.get('access_token');
                 try {
-                const instance = http.create();
-                await instance.post('/logout');
+                // const instance = http.create();
+                // var obj = JSON.parse(sessionStorage.user);
+                await http.post('/logout',{headers: {"Authorization": `Bearer ${token}`}});
                 Cookies.remove('access_token');
+                sessionStorage.removeItem("user");
+                sessionStorage.removeItem("id");
+                // console.log(obj);
                 navigate('/login');
-                setIsAuthenticated(false);
+                // setIsAuthenticated(false);
                 } catch (err) {
                     console.log(err);
                 }
@@ -44,7 +49,7 @@ const Navbar = () => {
 
 
   return (
-    <nav className='bg-white'>
+    <nav className='bg-white border border-gray-200 border-t-0 border-l-0 border-r-0 border-b-1'>
         <div className='flex items-center font-medium justify-around'>
             <div className='z-50 md:mb-0 mb-5 md:pt-0 pt-5 px-5 md:w-auto flex justify-between w-full'>
                 <Link to={"/"}><h1 className=' text-[20px] md:mt-0'>The Freelance Hub</h1></Link>
@@ -60,8 +65,12 @@ const Navbar = () => {
                 <NavLinks></NavLinks>
             </ul>
             <div className='md:block hidden '>
-                {isAuthenticated ?
-                    <button onClick={handleLogout}>Log Out</button>
+                {document.cookie.match('access_token') ?
+                    <>
+                        <button className='mr-5' onClick={handleLogout}>Log Out</button>
+                        <Link to={"/profile"} className='ml-4'>Profile</Link>
+                    </>
+
                     : <>
                     <Link to={"/register"} className='bg-sky-500/50 mx-4 px-6 py-2 rounded-full '>Register</Link>
                     <Link to={"/login"} className='bg-sky-500/50 py-2 px-6 rounded-full'>Log in</Link>
@@ -75,9 +84,12 @@ const Navbar = () => {
                         <Link to={"/"} className='py-7 px-3 inline-block'>Home</Link>
                     </li>
                     <NavLinks></NavLinks>
-                    <div className='py-5 flex flex-col'>
-                    {isAuthenticated ? 
-                        <button onClick={handleLogout}>Log Out</button>
+                    <div className='py-5 flex  flex-col'>
+                    {document.cookie.match('access_token') ? 
+                        <>
+                            <button className='mr-5' onClick={handleLogout}>Log Out</button>
+                            <Link to={"/profile"} className='ml-4'>Profile</Link>
+                        </>
                         : <> 
                         <Link to={"/register"} className='bg-sky-500/50 w-[100px] mb-10 md:mx-4 px-6 py-2 rounded-full '>Register</Link>
                         <Link to={"/login"} className='bg-sky-500/50 py-2 w-[100px] px-6 rounded-full'>Log in</Link>

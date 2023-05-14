@@ -1,14 +1,13 @@
 import React, { useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import http from "../http";
+import {saveUserInSession} from '../Helpers/functions';
 import ProtectedRoute from '../components/ProtectedRoutes/ProtectedRoute';
-
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
   const [error, setError] = useState([]);
-  const [token,setToken] = useState([]);
   
   const handleSubmit = async (event)=>{
     event.preventDefault();
@@ -18,9 +17,15 @@ export default function Login() {
         if (response.status === 200) {
           setEmail("");
           setPassword();
-          console.log(response.data.access_token.tokenable_id);
-          document.cookie = `access_token=${response.data.access_token}; path=/; secure; http-only`;
-          setToken(response.data.access_token);
+          const inf = response.data.user;
+          console.log(inf);
+          const id = response.data.user.id;
+          const token = response.data.access_token;
+          console.log(token);
+          console.log(id);
+          // sessionStorage.setItem('user', JSON.stringify(inf));
+          saveUserInSession(inf);
+          document.cookie = `access_token=${token}; path=/; secure; http-only`;
           navigate("/");
         } else if (response.status === 204) {
           console.log("error");
@@ -31,7 +36,6 @@ export default function Login() {
         setError(error.response.data.error);
         console.error(error.response.data.error);
       });
-      console.log(token);
   }
   if(!document.cookie.match('access_token')){
     return (

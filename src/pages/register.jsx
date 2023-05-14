@@ -14,7 +14,7 @@ export default function Register() {
     setInputs(values=>({...values,[name]:value}))
   }
   const submitForm = () =>{
-    http.post('/users',inputs).then((res)=>{
+    http.post('/register',inputs).then((res)=>{
       console.log(res);
       if(res.data.status === 200){
         navigate('/');

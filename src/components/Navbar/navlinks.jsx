@@ -16,8 +16,8 @@ const NavLinks = () => {
                                         <div className='w-4 h-4 left-3 absolute mt-1 bg-slate-300 rotate-45'></div>
                                     </div>
                                     <div className='bg-slate-300 p-3.5 grid grid-cols-3 gap-10'>
-                                        {link.sublinks.map((mysublinks)=>(
-                                            <div key={link.id}>
+                                        {link.sublinks.map((mysublinks , index)=>(
+                                            <div key={index}>
                                                 <h1 className='text-lg font-semibold'>{mysublinks.Head}</h1>
                                                 {mysublinks.sublink.map(slink=>(
                                                     <li className='text-sm text-gray-600 my-2.5'>

@@ -179,7 +179,7 @@ export default function EditProfile() {
                         </button>
                     </form>
                 </div>
-                </div>
+            </div>
         </div>
     );
 }else{

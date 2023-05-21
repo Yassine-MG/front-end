@@ -33,15 +33,11 @@ const Navbar = () => {
         const handleLogout = async () => {
             const token = Cookies.get('access_token');
                 try {
-                // const instance = http.create();
-                // var obj = JSON.parse(sessionStorage.user);
                 await http.post('/logout',{headers: {"Authorization": `Bearer ${token}`}});
                 Cookies.remove('access_token');
                 sessionStorage.removeItem("user");
                 sessionStorage.removeItem("id");
-                // console.log(obj);
                 navigate('/login');
-                // setIsAuthenticated(false);
                 } catch (err) {
                     console.log(err);
                 }

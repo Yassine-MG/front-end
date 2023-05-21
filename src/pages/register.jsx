@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
 import http from '../http'
 import { useNavigate } from 'react-router-dom';
-import ProtectedRoute from '../components/ProtectedRoutes/ProtectedRoute';
+import Logged from '../components/ProtectedRoutes/Logged';
 
 export default function Register() {
   const navigate = useNavigate();
@@ -147,6 +147,6 @@ export default function Register() {
       </>
     )
   }else{
-    return(<ProtectedRoute/>)
+    return(<Logged/>)
   }
 }

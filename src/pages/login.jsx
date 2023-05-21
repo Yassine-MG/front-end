@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import http from "../http";
 import {saveUserInSession} from '../Helpers/functions';
-import ProtectedRoute from '../components/ProtectedRoutes/ProtectedRoute';
+import Logged from '../components/ProtectedRoutes/Logged';
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -108,6 +108,6 @@ export default function Login() {
       </>
     )
   }else{
-    return(<ProtectedRoute/>)
+    return(<Logged/>)
   }
 }

@@ -3,41 +3,32 @@ import { useNavigate, Link} from "react-router-dom";
 import http from "../http";
 import {saveUserInSession} from '../Helpers/functions';
 import Logged from '../components/ProtectedRoutes/Logged';
-export default function Login() {
+export default function ResetPasswordByEmail() {
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const navigate = useNavigate();
   const [error, setError] = useState([]);
-  
-  const handleSubmit = async (event)=>{
-    event.preventDefault();
-    await http.post('/auth', {email, password})
-      .then((response) => {
-        console.log(response);
-        if (response.status === 200) {
-          setEmail("");
-          setPassword();
-          const inf = response.data.user;
-          console.log(inf);
-          const id = response.data.user.id;
-          const token = response.data.access_token;
-          console.log(token);
-          console.log(id);
-          // sessionStorage.setItem('user', JSON.stringify(inf));
-          saveUserInSession(inf);
-          document.cookie = `access_token=${token}; path=/; secure; http-only`;
-          navigate("/");
-          window.location.reload();
-        } else if (response.status === 204) {
-          console.log("error");
-        }
-      })
-      .catch((error) => {
-        console.error(error);
-        setError(error.response.data.error);
-        console.error(error.response.data.error);
-      });
+
+
+  const sendResetEmail = async (event) => {
+    event.preventDefault()
+    try {
+      // Make a POST request to your backend endpoint
+      const response = await http.post('/send-password-reset-email', { email });
+
+      // Check the response status
+      if (response.status === 200) {
+        // Email sent successfully, you can handle the success scenario here
+        console.log('Email sent successfully');
+      } else {
+        // Handle any other status codes or errors
+        console.log('Error sending email');
+      }
+    } catch (error) {
+      // Handle any network or server errors
+      console.error(error);
+    }
   }
+
   if(!document.cookie.match('access_token')){
     return (
       <div className='flex'>
@@ -49,18 +40,19 @@ export default function Login() {
             <h1 className='text-center text-4xl'><i className="bi bi-globe pr-2 text-[#86d2f4]"></i></h1>
             
             <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
-              Sign in to your Freelance Hub
+              Reset Your Password
             </h2>
           </div>
 
           <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-            <form className="space-y-6" onSubmit={handleSubmit}>
+            <form className="space-y-6" onSubmit={sendResetEmail}>
               <h2 className="text-center text-red-600 font-bold">{error}</h2>
+              <div>
               <div>
                 <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
                   Email address
                 </label>
-                <div className="mt-2">
+                <div className="my-5">
                   <input
                     id="email"
                     name="email"
@@ -73,34 +65,12 @@ export default function Login() {
                   />
                 </div>
               </div>
-
-              <div>
-                <div className="flex items-center justify-between">
-                  <label htmlFor="password" className="block text-sm font-medium leading-6 text-gray-900">
-                    Password
-                  </label>
-
-                </div>
-                <div className="mt-2">
-                  <input
-                    id="password"
-                    name="password"
-                    type="password"
-                    autoComplete="current-password"
-                    value={password}
-                    onChange={(e)=>setPassword(e.target.value)}
-                    required
-                    className="block w-full rounded-md border-0 p-3 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-[#86d2f4] outline-none sm:text-sm sm:leading-6"
-                  />
-                </div>
-                <Link to={"/reset/password/email"} className=' text-[#62a1be] hover:text-[#135d80] block mt-2 underline text-sm'>Forgot Password</Link>
-              </div>
-              <div>
+                
                 <button
                   type="submit"
                   className="flex w-full justify-center rounded-md duration-300 bg-[#86d2f4] px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-[#135d80] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                 >
-                  Sign in
+                  Send Code
                 </button>
               </div>
             </form>

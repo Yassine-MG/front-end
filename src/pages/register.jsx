@@ -11,8 +11,11 @@ export default function Register() {
   const handleChange = (event)=>{
     const name = event.target.name;
     const value = event.target.value;
+    console.log(name);
+    console.log(value);
     setInputs(values=>({...values,[name]:value}))
   }
+
   const submitForm = () =>{
     http.post('/register',inputs).then((res)=>{
       console.log(res);
@@ -20,7 +23,7 @@ export default function Register() {
         navigate('/');
         setError(null);
       }else if(res.data.status === 204){
-        const errors = res.data.errors;
+        const errors = res;
         console.log(errors);
         const emailError =  errors.email || [];
         setEmailErrors(emailError);
@@ -83,7 +86,7 @@ export default function Register() {
                     type="email"
                     autoComplete="email"
                     required
-                    className="block w-full rounded-md p-3 border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    className="block w-full invalid:border-pink-500 invalid:text-pink-600 rounded-md p-3 border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   />
                 </div>
               </div>
@@ -94,11 +97,11 @@ export default function Register() {
                   </label>
                 </div>
                 <div className="mt-2">
-                    <ul>
-                      {error && error.map((msg) => (
-                        <li key={msg} className="text-red-500">{msg}</li>
-                        ))}
-                    </ul>
+                <ul>
+                    {Array.isArray(error) && error.map((msg) => (
+                      <li key={msg} className="text-red-500">{msg}</li>
+                    ))}
+                  </ul>
 
                   <input
                     id="password"

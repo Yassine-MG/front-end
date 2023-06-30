@@ -1,5 +1,5 @@
 import React , {useState} from 'react'
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {saveUserInSession , postDataWithToken,options} from '../../Helpers/functions';
 export default function OverviewForm() {
   const [selectedOption, setSelectedOption] = useState("");
@@ -17,12 +17,11 @@ const handleCheckboxChange = (event) => {
   if (selectedCheckboxes.includes(value)) {
       setSelectedCheckboxes(selectedCheckboxes.filter((item) => item !== value));
       //   console.log(selectedCheckboxes);
-      } else {
-          console.log(selectedCheckboxes);
-          setSelectedCheckboxes([...selectedCheckboxes, value]);
-      // setInputs({ ...inputs, skills: selectedCheckboxes })
-
+    }else {
+      if (selectedCheckboxes.length < 4) {
+        setSelectedCheckboxes([...selectedCheckboxes, value]);
       }
+    }
   };
 
   const handleSelectChange = (event) => {
@@ -41,7 +40,7 @@ const handleCheckboxChange = (event) => {
           };
       postDataWithToken('/create/service', data)
       .then(response => {
-          console.log(response);
+          console.log(response.data.user);
           saveUserInSession(response.data.user);
           // sessionStorage.setItem('service', JSON.stringify(data));
           sessionStorage.setItem('service', JSON.stringify(response.data.service));
@@ -49,17 +48,6 @@ const handleCheckboxChange = (event) => {
       })
       .catch(error => {
           console.log(error);
-          // const responseErrors = error.response.data.errors;
-          
-          // if (typeof responseErrors === 'object' && responseErrors !== null) {
-          //     const errorsArray = Object.values(responseErrors).flat();
-          //     setErrors(errorsArray);
-          //     window.scrollTo({
-          //         top: 0, 
-          //         behavior: 'smooth'
-          //       });
-              
-          //   }
       });
 };
   return (
@@ -108,12 +96,13 @@ const handleCheckboxChange = (event) => {
         )}
         </div>
         <div className='flex justify-end my-10'>
-          <button
+          <Link
+            to={"/profile"}
             type="button"
             className="justify-center ml-5 rounded-md bg-red-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-red-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
           >
             Cancel
-          </button>
+          </Link>
           <button
             type="button"
             onClick={handleSubmit}

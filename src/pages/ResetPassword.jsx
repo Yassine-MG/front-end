@@ -3,7 +3,7 @@ import { useNavigate, Link} from "react-router-dom";
 import http from "../http";
 import {saveUserInSession} from '../Helpers/functions';
 import Logged from '../components/ProtectedRoutes/Logged';
-export default function Login() {
+export default function ResetPassword() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
@@ -57,24 +57,6 @@ export default function Login() {
             <form className="space-y-6" onSubmit={handleSubmit}>
               <h2 className="text-center text-red-600 font-bold">{error}</h2>
               <div>
-                <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
-                  Email address
-                </label>
-                <div className="mt-2">
-                  <input
-                    id="email"
-                    name="email"
-                    type="email"
-                    value={email}
-                    onChange={(e)=>setEmail(e.target.value)}
-                    autoComplete="email"
-                    required
-                    className="block w-full rounded-md border-0 p-3 py-1.5 text-gray-900 outline-none shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-[#86d2f4] sm:text-sm sm:leading-6"
-                  />
-                </div>
-              </div>
-
-              <div>
                 <div className="flex items-center justify-between">
                   <label htmlFor="password" className="block text-sm font-medium leading-6 text-gray-900">
                     Password
@@ -93,7 +75,26 @@ export default function Login() {
                     className="block w-full rounded-md border-0 p-3 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-[#86d2f4] outline-none sm:text-sm sm:leading-6"
                   />
                 </div>
-                <Link to={"/reset/password/email"} className=' text-[#62a1be] hover:text-[#135d80] block mt-2 underline text-sm'>Forgot Password</Link>
+                <div>
+                <div className="flex items-center justify-between">
+                  <label htmlFor="password" className="block text-sm font-medium leading-6 text-gray-900">
+                    Password Confirmation
+                  </label>
+                </div>
+                <div className="mt-2">
+                  <span>
+                  </span>
+                  <input
+                    id="password_confirmation"
+                    name="password_confirmation"
+                    type="password"
+                    autoComplete="current-password"
+                    required 
+                    className="block w-full p-3 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  />
+                </div>
+              </div>
+                <Link className=' text-[#62a1be] hover:text-[#135d80] block mt-2 underline text-sm'>Forgot Password</Link>
               </div>
               <div>
                 <button

@@ -1,6 +1,6 @@
 import React , {useEffect,useState} from 'react';
 import http from './http';
-import {saveUserInSession,getUserFromSession} from './Helpers/functions';
+import {saveUserInSession} from './Helpers/functions';
 import Cookies from 'js-cookie';
 import { useNavigate } from 'react-router-dom';
 import './App.css';
@@ -16,7 +16,22 @@ import Error from './components/ProtectedRoutes/Error';
 import OverviewForm from './pages/ServiceForm/OverviewForm';
 import PriceFrom from './pages/ServiceForm/PriceFrom';
 import FileForm from './pages/ServiceForm/FileForm';
-
+import ServicePage from './pages/service';
+import ServiceList from './pages/ServiceList';
+import EditOverviewForm from './pages/ServiceForm/EditingForm/EditOverviewForm';
+import EditPriceForm from './pages/ServiceForm/EditingForm/EditPriceForm';
+import EditFileForm from './pages/ServiceForm/EditingForm/EditFileForm';
+import img1 from "./images/default.jfif"
+import RequirementService from './pages/RequirementService'
+import Orders from './pages/Orders';
+import OrdersWaitingList from './pages/OrdersWaitingList';
+import Gigs from './pages/gigs';
+import ProfileUser from './pages/ProfileUser';
+import ClientOrder from './pages/ClientOrder';
+import ChatComponent from './pages/ChatComponent';
+import Footer from './components/Footer/Footer';
+import ResetPassword from './pages/ResetPassword';
+import ResetPasswordByEmail from './pages/ResetPasswordByEmail';
 function App() { 
   const [role, setRole] = useState(null);
   const [user, setUser] = useState(null);
@@ -39,17 +54,17 @@ function App() {
           const id = sessionUser.id;
           http.get(`/edit/${id}`,{headers: {"Authorization": `Bearer ${token}`}})
           .then((response) => {
-              console.log(sessionUser.role);
               setUser(response.data.user)
+              // setUser(response.data.user)
               setRole(response.data.user.role)
             if(sessionUser.role){
-              if(sessionUser.role != response.data.user.role){
+              if(sessionUser.role !== response.data.user.role){
                   saveUserInSession(response.data.user)
               } 
-             }
+            }
           })
           .catch((error) => {
-              console.log(error.message);
+              // console.log(error.message);
           });
     }else{
       const handleStorageChange = (event) => {
@@ -75,8 +90,8 @@ function App() {
   
   return (
     <div className="a">
-      <Navbar></Navbar>
-      <div className="container mx-auto">
+      <Navbar prop={user?.photo == null ? img1 :`http://localhost:8000/storage/${user?.photo}`}></Navbar>
+      <div className=" mx-auto ">
           <Routes>
             <Route path='/' element={<Home/>}/>
             <Route path='/register' element={<Register/>}/>
@@ -96,7 +111,23 @@ function App() {
             <Route path='/add/service/overview' element={<OverviewForm/>}/> 
             <Route path='/add/service/priceform' element={<PriceFrom/>}/> 
             <Route path='/add/service/fileform' element={<FileForm/>}/> 
+            <Route exact path="/service/:id" element={<ServicePage/>} />
+            <Route exact path="/service/list" element={<ServiceList/>} />
+            <Route path='/edit/service/overview/:id' element={<EditOverviewForm/>}/> 
+            <Route path='/edit/service/price/:id' element={<EditPriceForm/>}/> 
+            <Route path='/edit/service/file/:id' element={<EditFileForm/>}/> 
+            <Route path='/request/service/:id' element={<RequirementService/>}/> 
+            <Route path='/profile/:id' element={<ProfileUser/>}/> 
+            <Route path='/profile/orders/waiting/list' element={<OrdersWaitingList/>}/> 
+            <Route path='/profile/orders' element={<Orders/>}/> 
+            <Route path='/profile/gigs' element={<Gigs/>}/> 
+            <Route path='/profile/clientorder' element={<ClientOrder/>}/> 
+            <Route path='/list/messages' element={<ChatComponent/>}/> 
+            <Route path='/reset/password' element={<ResetPassword/>}/> 
+            <Route path='/reset/password/email' element={<ResetPasswordByEmail/>}/> 
+
           </Routes>  
+      <Footer/>
       </div>
     </div>
   );

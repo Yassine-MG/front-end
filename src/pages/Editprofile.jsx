@@ -3,10 +3,12 @@ import http from '../http'
 import { useNavigate } from "react-router-dom";
 import Login from './login';
 import Cookies from 'js-cookie';
+import img1 from "../images/default.jfif";
 export default function EditProfile() {
     const[inputs,setInputs] = useState({});
     const[error,setError] = useState("");
     const [countries, setCountries] = useState([]);
+    const [defaultImage, setDefaultImage] = useState('default.jpg');
     const navigate = useNavigate();
     
     useEffect(()=>{
@@ -16,6 +18,10 @@ export default function EditProfile() {
         const id = userfromstorage.id
         http.get(`/edit/${id}`, {headers: {"Authorization": `Bearer ${token}`}}).then(res=>{
             setInputs(res.data.user);
+            if (res.data.user.photo) {
+                // If the user has a photo in the database, update the default image URL
+                setDefaultImage(`http://localhost:8000/storage/${res.data.user.photo}`);
+              }
         })
         http.get('https://countriesnow.space/api/v0.1/countries/positions').then(res=>{
             const data = res.data.data.flat();
@@ -25,11 +31,43 @@ export default function EditProfile() {
     }
     },[])
 
-    const handleInput = (event)=>{
-        const name = event.target.name;
-        const value = event.target.value;
-        setInputs(values=>({...values,[name]:value}))
-    }
+    const handleInput = (event) => {
+        if (event.target.name === 'photo') {
+          // Handle profile picture input separately
+            const file = event.target.files[0];
+        
+            if (file) {
+                // If a file is selected, display the selected image
+                setInputs((values) => ({
+                ...values,
+                photo: file,
+                }));
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                setDefaultImage(e.target.result);
+                };
+                reader.readAsDataURL(file);
+            } else {
+                // If no file is selected, display the default image or the user's existing photo
+                setInputs((values) => ({
+                ...values,
+                photo: null,
+                }));
+                if (inputs.photo) {
+                // If the user has a photo, display it
+                setDefaultImage(`http://localhost:8000/storage/${inputs.photo}`);
+                } else {
+                // If the user doesn't have a photo, display the default image
+                setDefaultImage(img1);
+                }
+            }
+            } else {
+            // Handle other inputs
+            const name = event.target.name;
+            const value = event.target.value;
+            setInputs((values) => ({ ...values, [name]: value }));
+            }
+        };
     
     function handleSubmit (event) {
         event.preventDefault()
@@ -37,7 +75,19 @@ export default function EditProfile() {
             const userfromstorage = JSON.parse(sessionStorage.getItem("user"));
             const id = userfromstorage.id;
             console.log(id);
-            http.put(`/update/${id}`,inputs,{headers: {"Authorization": `Bearer ${token}`}}).then(res=>{
+            const formData = new FormData();
+            formData.append('_method', 'put');
+            formData.append('photo', inputs.photo);
+            // Append other form data
+            Object.keys(inputs).forEach((key) => {
+                if (key !== 'photo') {
+                    formData.append(key, inputs[key]);
+                }
+            });
+            http.post(`/update/${id}`,formData,{
+                'Content-Type': 'multipart/form-data',
+                headers: {"Authorization": `Bearer ${token}`
+            }}).then(res=>{
                 console.log(res.data)
             }).catch(err=>{
                 console.log(err)
@@ -56,6 +106,32 @@ export default function EditProfile() {
             <div className="mt-10">
                 <div className=" w-[85%] mx-auto bg-white border p-5 border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
                     <form onSubmit={handleSubmit} method="put">
+                    <div className="flex justify-center items-center space-x-6">
+                    <div className="shrink-8">
+                        {inputs.photo ? (
+                            <img
+                            className="h-16 w-16 object-cover rounded-full"
+                            src={defaultImage}
+                            alt="Current profile photo"
+                            />
+                        ) : (
+                            <img
+                            className="h-16 w-16 object-cover rounded-full"
+                            src={img1}
+                            alt="Current profile photo"
+                            />
+                        )}
+                    </div>
+                        <label className="block">
+                            <span className="sr-only">Choose profile photo</span>
+                            <input type="file" 
+                                    accept="image/*"
+                                    name="photo"
+                                    onChange={handleInput}
+                                    className="block w-full  text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-violet-50 file:text-violet-900 hover:file:bg-violet-100"
+                            />
+                        </label>
+                    </div>
                     <div className="sm:col-span-3">
                         <label htmlFor="first-name" className="block text-sm font-medium leading-6 text-gray-900">
                             First name

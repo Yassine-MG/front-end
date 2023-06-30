@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react'
-import {deleverytimes ,postDataWithToken,saveUserInSession} from '../../Helpers/functions';
+import {deleverytimes ,saveUserInSession,options} from '../../Helpers/functions';
 import { useNavigate } from "react-router-dom";
 import Cookies from 'js-cookie';
 import http from '../../http'
@@ -7,18 +7,20 @@ export default function PriceFrom() {
     const [selectedOption, setSelectedOption] = useState("");
     const navigate = useNavigate();
     const token = Cookies.get("access_token");
-    const userfromstorage = JSON.parse(sessionStorage.getItem("service"))
-    const id = userfromstorage.id
+    const servicefromstorage = JSON.parse(sessionStorage.getItem("service"))
+    const id = servicefromstorage.id
+    const userFromStorage = JSON.parse(sessionStorage.getItem("service"));
+    const category = userFromStorage.category;
+    const selectedOptions = options.find((option) => option.value === category);
+    const dynamicInputs = selectedOptions ? selectedOptions.inputs : [];
     const[inputs,setInputs] = useState({
         offer_name: '',
         details: '',
         price: '',
         delevery:'',
     });
+console.log(category);
 
-    useEffect(()=>{
-
-    },[])
     const handleSelectChange = (event) => {
         setSelectedOption(event.target.value);
         console.log(event.target.value);
@@ -26,16 +28,22 @@ export default function PriceFrom() {
         };
     const handleSubmit = (e) => {
         e.preventDefault();
+        const selectedInputs = dynamicInputs.map((input) => {
+            return {
+                name: input.name,
+                value: inputs[input.name] || '', 
+            };
+        });
+    
         const data = {
             ...inputs,
             delevery: selectedOption,
-            };
-        // postDataWithToken('/create/service', data)
+            dynamicInputs: selectedInputs,
+        };
         http.put(`/add/price/${id}`,data,{headers: {"Authorization": `Bearer ${token}`}})
         .then(response => {
-            console.log(response.data);
+            console.log(response.data.user);
             saveUserInSession(response.data.user);
-            // navigate('/add/service/priceform')
             navigate('/add/service/fileform')
         })
         .catch(error => {
@@ -44,7 +52,7 @@ export default function PriceFrom() {
     };
     return (
         <div className='w-[70%] mx-auto border my-20 p-5 border-gray-200'>
-            <form action="">
+            <form>
                 <div className='flex mr-5 ml-10'>
                     <div className='w-[30%]'>
                         <h1 className='text-lg font-semibold my-2'>Title</h1>
@@ -53,18 +61,63 @@ export default function PriceFrom() {
                     <input
                         type="text"
                         name="offer_name"
+                        maxLength="55"
                         value={inputs.offer_name} 
                         onChange={(e) => setInputs({ ...inputs, offer_name: e.target.value })}
                         id="name_offer"
                         className="block w-[70%] h-[50px] p-2 mt-5 border-0 outline-none py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6"
                     />
                 </div>
+                {dynamicInputs.map((input, index) => (
+                    <div key={index} className="flex mr-5 ml-10 input-box">
+                        <div className="w-[30%]">
+                        <h1 className="text-lg font-semibold my-2">{input.label}</h1>
+                        </div>
+                        {input.type === "checkbox" ? (
+                        <input
+                            type="checkbox"
+                            name={input.name}
+                            checked={inputs[input.name] || false}
+                            onChange={(e) =>
+                            setInputs({ ...inputs, [input.name]: e.target.checked })
+                            }
+                            className=""
+                        />
+                        ) : input.type === "select" ? (
+                        <select
+                            className="block m-5 w-[70%] border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-500 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                            value={inputs[input.name] || ""}
+                            onChange={(e) =>
+                            setInputs({ ...inputs, [input.name]: e.target.value })
+                            }
+                        >
+                            {input.options.map((option) => (
+                            <option key={option} value={option}>
+                                {option}
+                            </option>
+                            ))}
+                        </select>
+                        ) : (
+                        <textarea
+                            className="resize-none p-2 outline-none border mt-8 border-gray-200 h-[10vh]"
+                            value={inputs[input.name] || ""}
+                            onChange={(e) =>
+                            setInputs({ ...inputs, [input.name]: e.target.value })
+                            }
+                            rows="2"
+                            cols="100"
+                            name={input.name}
+                            id={input.name}
+                        ></textarea>
+                        )}
+                    </div>
+                    ))}
                 <div className='flex p-5 '>
                     <div className='w-[30%] m-5 pr-5'>
                         <h1 className='text-lg font-semibold my-2'>Description</h1>
                         <p className='text-sm'>Describe the details of your offering </p>
                     </div>
-                    <textarea className='resize-none p-2 outline-none border mt-8 border-gray-200 h-[10vh]' value={inputs.details} onChange={(e) => setInputs({ ...inputs, details: e.target.value })} rows="2" cols="100" name="details" id="details" ></textarea>
+                    <textarea className='resize-none p-2 outline-none border mt-8 border-gray-200 h-[10vh]' value={inputs.details} onChange={(e) => setInputs({ ...inputs, details: e.target.value })} rows="2" maxLength="200" cols="100" name="details" id="details" ></textarea>
                 </div>
                 <div className='flex'>
                         <h1 className='w-[30%] my-5 ml-10 text-lg font-semibold'>Delevery Day :</h1>

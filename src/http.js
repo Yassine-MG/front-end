@@ -25,3 +25,6 @@ const http= axios.create({
     }
     
     export default http;
+
+
+    

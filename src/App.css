@@ -3,3 +3,98 @@ input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
+
+
+.divinput:hover .titlei{
+  background-color: #ec4899;
+  color: aliceblue;
+}
+
+
+.list:hover .image-list {
+  transform: scale(1.2);
+  transition: transform 0.3s ease;
+}
+.image-list {
+  transform: scale(1);
+  transition: transform 0.3s ease;
+}
+
+.count:hover >div{
+  background-color: #86d2f4;
+  color: white;
+  transition: all 0.3s ease;
+}
+
+
+
+
+
+
+
+
+
+.containerdiv {
+  position: relative;
+  overflow: hidden;
+
+  z-index: 1;
+}
+.containerdiv::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: #e5e5e5;
+  opacity: 0;
+  transition: .5s ease all;
+}
+.containerdiv > img {
+  transition: .5s ease all;
+   width: 100%;
+    object-fit:cover;
+    transform: scale(1.2);
+  }
+
+.containerdiv:hover > img {
+  transform: scale(1);
+}
+
+.containerdiv:hover::after {opacity: 0.2;}
+
+
+.hover-underline-animation {
+  display: inline-block;
+  position: relative;
+}
+
+.hover-underline-animation::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  transform: scaleX(0);
+  height: 2px;
+  bottom: 0;
+  left: 0;
+  background-color: #86d2f4;
+  transform-origin: bottom right;
+  transition: transform 0.25s ease-out;
+}
+
+.hover-underline-animation:hover::after {
+  transform: scaleX(1);
+  transform-origin: bottom left;
+}
+
+.image1 {
+  filter: brightness(50%) saturate(70%);
+  transition: all ease-in-out 1s;
+}
+.login{
+  background-image: url(./images/accuille4.jpg);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}

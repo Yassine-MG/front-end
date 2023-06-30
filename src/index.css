@@ -8,3 +8,16 @@
     background-repeat: no-repeat;
     background-attachment: fixed;
 } */
+
+/* 
+
+
+  .options-container {
+    opacity: 0;
+    transition: all 1s ease-in-out !important;
+  }
+  
+  .options-visible {
+    opacity: 1;
+  } */
+  

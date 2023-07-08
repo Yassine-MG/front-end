@@ -25,6 +25,9 @@ const Navbar = ({ prop }) => {
             // console.log(error.message);
         });
     },[])
+
+    
+
     useEffect(() => {
         if (document.cookie.match('access_token')) {
         const checkAuth = async () => {
@@ -69,11 +72,11 @@ const Navbar = ({ prop }) => {
     };
 
     return (
-        <nav className=' z-50 bg-white fixed top-0 w-screen border border-gray-200 border-t-0 border-l-0 border-r-0 border-b-1'>
+        <nav className=' z-50 bg-[white] fixed top-0 w-screen border border-gray-200 border-t-0 border-l-0 border-r-0 border-b-1'>
         <div className='flex items-center font-medium justify-around'>
-            <div className='z-50 md:mb-0 mb-5 md:pt-0 pt-5 px-5 md:w-auto flex justify-between w-full'>
+            <div className='z-50 md:mb-0  md:pt-0 py-3 my-2 md:px-5 px-3 md:w-auto flex justify-between w-full'>
             <Link to={'/'}>
-                <h1 className='text-[20px] md:mt-0'><i className="bi bi-globe pr-2 text-[#86d2f4]"></i> The Freelance Hub</h1>
+                <h1 className='md:text-[20px] text-[18px] md:mt-0'><i className="bi bi-globe pr-2 text-[#86d2f4]"></i> The Freelance Hub</h1>
             </Link>
             <div className='text-3xl md:hidden' onClick={() => setOpen(!open)}>
                 <ion-icon name={`${open ? 'close-outline' : 'menu-outline'}`}></ion-icon>

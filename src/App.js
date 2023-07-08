@@ -89,7 +89,7 @@ function App() {
     }, []);
   
   return (
-    <div className="a">
+    <div id="navbar-container" className='bg-slate-50'>
       <Navbar prop={user?.photo == null ? img1 :`http://localhost:8000/storage/${user?.photo}`}></Navbar>
       <div className=" mx-auto ">
           <Routes>

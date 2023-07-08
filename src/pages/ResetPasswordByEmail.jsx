@@ -5,30 +5,18 @@ import {saveUserInSession} from '../Helpers/functions';
 import Logged from '../components/ProtectedRoutes/Logged';
 export default function ResetPasswordByEmail() {
   const [email, setEmail] = useState("");
-  const navigate = useNavigate();
-  const [error, setError] = useState([]);
-
+  const [error, setError] = useState("");
 
   const sendResetEmail = async (event) => {
-    event.preventDefault()
+    event.preventDefault();
     try {
-      // Make a POST request to your backend endpoint
-      const response = await http.post('/send-password-reset-email', { email });
-
-      // Check the response status
-      if (response.status === 200) {
-        // Email sent successfully, you can handle the success scenario here
-        console.log('Email sent successfully');
-      } else {
-        // Handle any other status codes or errors
-        console.log('Error sending email');
-      }
+      const response = await http.post('/send/password/reset/email', { email });
+     console.log(response);
     } catch (error) {
-      // Handle any network or server errors
       console.error(error);
     }
+    
   }
-
   if(!document.cookie.match('access_token')){
     return (
       <div className='flex'>

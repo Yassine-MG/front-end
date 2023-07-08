@@ -8,7 +8,15 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
   const [error, setError] = useState([]);
-  
+  const [focusedInput, setFocusedInput] = useState('');
+
+  const handleFocus = (inputId) => {
+    setFocusedInput(inputId);
+  };
+
+  const handleBlur = () => {
+    setFocusedInput('');
+  };
   const handleSubmit = async (event)=>{
     event.preventDefault();
     await http.post('/auth', {email, password})
@@ -60,17 +68,22 @@ export default function Login() {
                 <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
                   Email address
                 </label>
-                <div className="mt-2">
+                <div className="mt-2 relative">
                   <input
                     id="email"
                     name="email"
                     type="email"
                     value={email}
+                    onFocus={() => handleFocus('email')}
+                    onBlur={handleBlur}
                     onChange={(e)=>setEmail(e.target.value)}
                     autoComplete="email"
                     required
-                    className="block w-full rounded-md border-0 p-3 py-1.5 text-gray-900 outline-none shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-[#86d2f4] sm:text-sm sm:leading-6"
+                    className="block w-full rounded-md border-1  border-gray-300  focus:border-[#86d2f4]  pl-9 pr-3 py-2 text-gray-900 outline-none shadow-sm placeholder:text-gray-400 sm:text-sm sm:leading-6"
                   />
+                    <span className={`absolute transition-all ease-in-out duration-300 ${focusedInput === 'email' ? "text-[#73caf3]" : "text-gray-400"} left-3 top-2`}>
+                      <i className="bi bi-envelope-at"></i>
+                    </span>
                 </div>
               </div>
 
@@ -81,17 +94,22 @@ export default function Login() {
                   </label>
 
                 </div>
-                <div className="mt-2">
+                <div className="mt-2 relative">
                   <input
                     id="password"
                     name="password"
                     type="password"
                     autoComplete="current-password"
+                    onFocus={() => handleFocus('password')}
+                    onBlur={handleBlur}
                     value={password}
                     onChange={(e)=>setPassword(e.target.value)}
                     required
-                    className="block w-full rounded-md border-0 p-3 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-[#86d2f4] outline-none sm:text-sm sm:leading-6"
+                    className="block w-full rounded-md border-1 border-gray-300 focus:border-[#86d2f4] pl-9 pr-3 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-[#86d2f4] outline-none sm:text-sm sm:leading-6"
                   />
+                  <span className={`absolute transition-all ease-in-out duration-300 ${focusedInput === 'password' ? "text-[#73caf3]" : "text-gray-400"} left-3 top-2`}>
+                    <i className="bi bi-key"></i>
+                  </span>
                 </div>
                 <Link to={"/reset/password/email"} className=' text-[#62a1be] hover:text-[#135d80] block mt-2 underline text-sm'>Forgot Password</Link>
               </div>

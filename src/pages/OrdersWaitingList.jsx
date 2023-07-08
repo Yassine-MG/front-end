@@ -127,11 +127,12 @@ export default function OrdersWaitingList() {
     const currentDate = new Date().toISOString().split('T')[0];
 
   return (
-    <div className="flex mt-20 flex-col container mx-auto">
+    <div className="flex mt-20 h-screen flex-col container mx-auto">
         <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
             <div className="inline-block min-w-full py-2 sm:px-6 lg:px-8">
             <div className="overflow-hidden">
-              <h1 className='text-center'>Waiting List</h1>
+              <h1 className='mx-5 text-3xl my-5'>Waiting List</h1>
+              <hr />
                 <table className="min-w-full text-left text-sm font-light">
                 <thead className="border-b font-medium dark:border-neutral-500">
                     <tr>
@@ -256,40 +257,40 @@ export default function OrdersWaitingList() {
             </div>
         </div>
         {modalOpen && (
-        <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-gray-800 bg-opacity-75">
-            <button
-              className="absolute top-2 right-12 text-gray-500 hover:text-gray-700"
-              onClick={closeModal}
-            >
-              <i className="bi bi-x-lg"></i>
-            </button>
-          <div className="bg-white relative p-2 rounded-lg">
-          {modalImages.length > 1 && (
-              <button
-                className="absolute top-[50%] left-2 text-2xl bg-white rounded-full p-3 text-gray-500 hover:text-gray-700"
-                onClick={() => handleImageChange('prev')}
-                disabled={currentImage === 0}
-              >
-                <i className="bi bi-chevron-left"></i>
-              </button>
-            )}
+            <div className="fixed top-0 left-0 w-full h-full z-50 flex items-center justify-center bg-gray-800 bg-opacity-75">
+                <button
+                className="absolute top-2 right-4 z-50 text-white text-3xl hover:text-gray-700"
+                onClick={closeModal}
+                >
+                <i className="bi bi-x-lg"></i>
+                </button>
+            <div className="bg-white relative p-2 rounded-lg">
             {modalImages.length > 1 && (
-              <button
-                className="absolute top-[50%] right-2 text-2xl bg-white rounded-full p-3 text-gray-500 hover:text-gray-700"
-                onClick={() => handleImageChange('next')}
-                disabled={currentImage === modalImages.length - 1}
-              >
-                <i className="bi bi-chevron-right"></i>
-              </button>
-            )}
-            <img
-            className="max-w-full max-h-[700px]"
-            src={modalImages[currentImage]}
-            alt="Modal"
-          />
-          </div>
-        </div>
-      )}
+                <button
+                    className="absolute top-[45%] left-2 text-2xl bg-[#ffffff77] font-semibold px-4 text-white rounded-full py-3 mx-2  duration-300 transition-all ease-out cursor-pointer hover:bg-[#ffffffb4] hover:text-[#111827]"
+                    onClick={() => handleImageChange('prev')}
+                    disabled={currentImage === 0}
+                >
+                    <i className="bi bi-chevron-left"></i>
+                </button>
+                )}
+                {modalImages.length > 1 && (
+                <button
+                    className="absolute top-[45%] right-2 text-2xl bg-[#ffffff77] font-semibold text-white rounded-full py-3 px-4 mx-2 duration-300 transition-all ease-out hover:bg-[#ffffffb4] hover:text-[#111827]"
+                    onClick={() => handleImageChange('next')}
+                    disabled={currentImage === modalImages.length - 1}
+                >
+                    <i className="bi bi-chevron-right"></i>
+                </button>
+                )}
+                <img
+                className="lg:max-w-full lg:max-h-[700px] sm:max-h-[800px] object-cover md:max-w-full"
+                src={modalImages[currentImage]}
+                alt="Modal"
+            />
+            </div>
+            </div>
+        )}
     </div>
   )
 }

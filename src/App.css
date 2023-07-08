@@ -27,13 +27,25 @@ input::-webkit-inner-spin-button {
 }
 
 
+.triangle {
+  width: 0;
+  height: 0;
+  border-left: 20px solid transparent;
+  border-right: 20px solid transparent;
+  border-top: 20px solid #d1d5dbad;
+}
 
+.cat {
+  background-image: url(./images/beams-home@95.jpg) ;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  
+}
 
-
-
-
-
-
+.scroll::-webkit-scrollbar{
+  display: none;
+}
 .containerdiv {
   position: relative;
   overflow: hidden;
@@ -97,4 +109,73 @@ input::-webkit-inner-spin-button {
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+}
+
+
+.box-addservice:hover > i {
+  color: #135d80;
+}
+.box-addservice:hover > h1{
+  color: #135d80;
+}
+.active {
+  background-color: red; /* Update with your desired background color */
+}
+
+
+
+#navbar-container {
+  background-color: transparent;
+  transition: background-color 0.3s;
+}
+
+/* Change the background color to white when scrolling */
+#navbar-container.scrolled {
+  background-color: white;
+}
+
+.hover-underline-pagination {
+ 
+  position: relative;
+}
+
+.hover-underline-pagination::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  transform: scaleX(0);
+  height: 2px;
+  bottom: 0;
+  left: 0;
+  background-color: #000000;
+  transform-origin: bottom right;
+  transition: transform 0.25s ease-out;
+}
+
+.hover-underline-pagination:hover::after {
+  transform: scaleX(1);
+  transform-origin: bottom left;
+}
+
+.hover-underline-transparant {
+ 
+  position: relative;
+}
+.hover-underline-transparant::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  transform: scaleX(0);
+  height: 2px;
+  bottom: 0;
+  left: 0;
+  background-color: transparent;
+  transform-origin: bottom right;
+  transition: transform 0.25s ease-out;
+}
+
+
+.hover-underline-transparant:hover::after {
+  transform: scaleX(1);
+  transform-origin: bottom left;
 }

@@ -122,13 +122,15 @@ console.log(video);
     }
   };
   return (
-    <div className='w-[70%] mx-auto border my-20 border-gray-200'>
-      <form encType="multipart/form-data" method='POST' onSubmit={handleSubmit}>
+    <div className='container'>
+    <div className='mx-auto border my-[150px] p-4 border-gray-200'>
+      <h1 className='text-center font-semibold text-2xl my-4 text-[#135d80]'>Gallery</h1>
+      <form encType="multipart/form-data" className='' method='POST' onSubmit={handleSubmit}>
         <div>
-          <h1 className='text-center'>Images (up to 3)</h1>
-          <div className="flex items-center justify-center w-[100%]">
+          <h1 className='text-center text-xl font-semibold my-10'>Images (up to 3)</h1>
+          <div className=" grid lg:grid-cols-3 md:grid-cols-2 gap-4 justify-items-center">
             
-            <div className="w-[25%]">
+            <div className=" lg:w-[100%] xl:w-[75%] md:w-[100%] sm:w-[70%] w-[100%]">
               {
                 input1Disabled ?
                 <div className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
@@ -150,7 +152,7 @@ console.log(video);
               }
 
             </div>
-            <div className="w-[25%] m-10">
+            <div className="lg:w-[100%] xl:w-[75%] md:w-[100%] sm:w-[70%] w-[100%]">
               {
                 input2Disabled?
                   <div className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
@@ -171,7 +173,7 @@ console.log(video);
               }
 
             </div>
-            <div className="w-[25%]">
+            <div className="lg:w-[100%] xl:w-[75%] md:w-[100%] sm:w-[70%] w-[100%] ">
               {
                 input3Disabled?
                 <div className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
@@ -197,12 +199,12 @@ console.log(video);
           </div>
         </div>
         <div>
-          <h1 className='text-center my-10'>Video (one only)</h1>
-          <p className='text-center '>Capture buyers' attention with a video that showcases your service.</p>
-          <p className='text-center '>Please choose a video shorter than 75 seconds and smaller than 50MB</p>
-          <div className='ml-24 '>
+          <h1 className='text-center text-xl font-semibold my-10'>Video (one only)</h1>
+          <p className='text-center font-semibold text-xs'>Capture buyers' attention with a video that showcases your service.</p>
+          <p className='text-center font-semibold text-xs mb-5'>Please choose a video shorter than 75 seconds and smaller than 50MB</p>
+          <div className='grid grid-cols-1 gap-4 justify-items-center'>
           
-          <div className="w-[27%]">
+          <div className="w-[100%] md:w-[50%] sm:w-[75%] xl:w-[25%] lg:w-[35%]">
             {
               input4Disabled?
               <div className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
@@ -227,18 +229,19 @@ console.log(video);
         <div className='flex justify-end my-10'>
           <Link
             to={"/profile"}
-            className="justify-center ml-5 rounded-md bg-red-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-red-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+            className="text-red-700 hover:text-white border border-red-700 duration-300 transition-all  hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-6 py-2 text-center mx-2 "
           >
             Cancel
           </Link>
           <button
             type="submit"
-            className=" justify-center mx-10 rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+            className="text-[#86d2f4] hover:text-white border border-[#86d2f4] duration-300 transition-all  hover:bg-[#39a0cf] focus:ring-4 focus:outline-none focus:ring-[#9dd4ee] font-medium rounded-lg text-sm px-6 py-2 text-center mx-2"
           >
             Save
           </button>
         </div>
       </form>
+    </div>
     </div>
   )
 }

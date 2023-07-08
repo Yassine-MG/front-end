@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link , useParams} from 'react-router-dom';
+import { Link , useParams, useNavigate} from 'react-router-dom';
 import http from '../http';
 import Cookies from 'js-cookie';
 
@@ -11,7 +11,7 @@ export default function RequirementService() {
         'description': '',
         'files': []
         });
-        
+        const navigate = useNavigate();
         const handleChange = (event) => {
             if (event.target.name === 'files') {
               // Handle file input separately
@@ -49,6 +49,7 @@ export default function RequirementService() {
             .then(response => {
                 console.log(response.data);
                 // Handle success response
+                navigate("/profile/clientorder")
             })
             .catch(error => {
                 console.error(error);
@@ -123,7 +124,7 @@ export default function RequirementService() {
                     type="submit"
                     className=" justify-center mx-10 rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                     >
-                    Save
+                    Sent
                     </button>
                 </div>
             </form>

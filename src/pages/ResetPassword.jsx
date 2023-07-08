@@ -1,42 +1,31 @@
-import React, { useState } from 'react';
+import React, { useState, useParams } from 'react';
 import { useNavigate, Link} from "react-router-dom";
 import http from "../http";
-import {saveUserInSession} from '../Helpers/functions';
+// import {saveUserInSession} from '../Helpers/functions';
 import Logged from '../components/ProtectedRoutes/Logged';
 export default function ResetPassword() {
-  const [email, setEmail] = useState("");
+  const { token } = useParams(); // Use useParams to access the route parameters
   const [password, setPassword] = useState("");
-  const navigate = useNavigate();
-  const [error, setError] = useState([]);
-  
-  const handleSubmit = async (event)=>{
+  const [passwordConfirmation, setPasswordConfirmation] = useState("");
+  const [error, setError] = useState("");
+
+  const resetPassword = async (event) => {
     event.preventDefault();
-    await http.post('/auth', {email, password})
-      .then((response) => {
-        console.log(response);
-        if (response.status === 200) {
-          setEmail("");
-          setPassword();
-          const inf = response.data.user;
-          console.log(inf);
-          const id = response.data.user.id;
-          const token = response.data.access_token;
-          console.log(token);
-          console.log(id);
-          // sessionStorage.setItem('user', JSON.stringify(inf));
-          saveUserInSession(inf);
-          document.cookie = `access_token=${token}; path=/; secure; http-only`;
-          navigate("/");
-          window.location.reload();
-        } else if (response.status === 204) {
-          console.log("error");
-        }
-      })
-      .catch((error) => {
-        console.error(error);
-        setError(error.response.data.error);
-        console.error(error.response.data.error);
+    try {
+      const response = await http.post('/reset-password', {
+        token,
+        password,
+        password_confirmation: passwordConfirmation,
       });
+
+      if (response.status === 200) {
+        console.log('Password reset successfully');
+      } else {
+        console.log('Error resetting password');
+      }
+    } catch (error) {
+      console.error(error);
+    }
   }
   if(!document.cookie.match('access_token')){
     return (
@@ -54,7 +43,7 @@ export default function ResetPassword() {
           </div>
 
           <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-            <form className="space-y-6" onSubmit={handleSubmit}>
+            <form className="space-y-6">
               <h2 className="text-center text-red-600 font-bold">{error}</h2>
               <div>
                 <div className="flex items-center justify-between">
@@ -70,7 +59,7 @@ export default function ResetPassword() {
                     type="password"
                     autoComplete="current-password"
                     value={password}
-                    onChange={(e)=>setPassword(e.target.value)}
+                    onChange={(e) => setPassword(e.target.value)}
                     required
                     className="block w-full rounded-md border-0 p-3 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-[#86d2f4] outline-none sm:text-sm sm:leading-6"
                   />
@@ -88,6 +77,8 @@ export default function ResetPassword() {
                     id="password_confirmation"
                     name="password_confirmation"
                     type="password"
+                    value={passwordConfirmation}
+                    onChange={(e) => setPasswordConfirmation(e.target.value)}
                     autoComplete="current-password"
                     required 
                     className="block w-full p-3 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"

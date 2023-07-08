@@ -20,14 +20,9 @@ export default function ServicePage({ match } ) {
     const token = Cookies.get("access_token");
     const [receiverId, setReceiverId] = useState("");
     const [messages, setMessages] = useState([]);
-    // const [currentSlide, setCurrentSlide] = useState(0);
-    // const nextSlide = () => {
-    //     setCurrentSlide((prevSlide) => prevSlide + 1);
-    //     };
-        
-    //     const prevSlide = () => {
-    //         setCurrentSlide((prevSlide) => prevSlide - 1);
-    //     };
+    const [showChatbox, setShowChatbox] = useState(false);
+    const [reduceChatbox, setReduceChatbox] = useState(false);
+    
     
         const formatDate = (dateString) => {
             const date = new Date(dateString);
@@ -74,26 +69,33 @@ export default function ServicePage({ match } ) {
                 fetchServices()
             }
         },[])
+
+        const handleReduce = () =>{
+            setShowChatbox(false);
+            setReduceChatbox(true);
+        }
+
+        const handleOpen = () =>{
+            setShowChatbox(true);
+            setReduceChatbox(false);
+        }
     return (
-        <div className=''>
+        <div className='min-h-screen mt-20 pb-10 lg:container mx-auto'>
             <div className='bg-white border border-gray-200 border-t-0 border-l-0 border-r-0 border-b-1'>
-            {
-                
-                <ServiceNavbar authid={authuser?.freelancer?.id} freelancer_id={service?.freelancer_id}  serviceId={id} />
-            }
+
             </div>
-            <div className="container w-full mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="md:mx-14  lg:mx-auto px-4 sm:px-6 lg:px-8">
                 
-                <div className=" my-10 grid relative grid-cols-1 gap-8 sm:grid-cols-12">
-                <div className="col-span-8 ">
-                    <div className="border border-gray-300 p-5">
+                <div className=" my-10 grid relative grid-cols-5 gap-8">
+                <div className="lg:col-span-3  bg-white col-span-5">
+                    <div className="border bg-white border-gray-300 p-3">
                     <h1 className="my-5 text-2xl font-semibold text-[#404145]">
                         {service?.title}
                     </h1>
                     <Link to={`/profile/${user.id}`} className="flex items-center my-5">
                         {user?.photo ? (
                         <img
-                            className="inline-block mr-5 h-12 w-12 rounded-full ring-2 ring-white"
+                            className="inline-block mr-5 h-12 w-12 rounded-full object-cover ring-2 ring-white"
                             src={`http://localhost:8000/storage/${user?.photo}`}
                             alt="profile picture"
                         />
@@ -106,33 +108,39 @@ export default function ServicePage({ match } ) {
                         )}
                         <h2 className="font-semibold text-xl">{freelancer?.displayed_name}</h2>
                     </Link>
-                    <Carousel className="w-full h-[50%]" showThumbs={false}>
+                    <div id="carouselExample" className="carousel slide">
+                    <div className="carousel-inner w-[100%] h-[35vh] md:h-[50vh]  object-cover">
                         {images.map((image, index) => (
-                        <div key={index} className="">
-                            <img
-                            src={`http://localhost:8000${image}`}
-                            alt={`image ${index + 1}`}
-                            className="w-full h-[50vh] object-cover"
-                            />
+                        <div key={index} className={`carousel-item bg-transparent ${index === 0 ? 'active' : ''}`}>
+                            <img src={`http://localhost:8000${image}`} className="d-block  w-[100%] h-[35vh] md:h-[50vh] object-cover " alt={`image ${index + 1}`} />
                         </div>
                         ))}
-                        <div>
+                        <div className="carousel-item w-[100%] h-[35vh] md:h-[50vh] bg-transparent">
                         {service?.video ? (
-                            <video className="w-full h-[50vh]" controls>
-                            <source
-                                src={`http://localhost:8000${service?.video}`}
-                                type="video/mp4"
-                            />
+                            <video className=" w-full h-full " controls>
+                            <source src={`http://localhost:8000${service?.video}`} type="video/mp4" />
                             </video>
                         ) : (
                             <></>
                         )}
                         </div>
-                    </Carousel>
+                    </div>
+                    <button className="carousel-control-prev text-black text-2xl " type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+                        <i className="bi bi-chevron-left bg-[#ffffffc4] px-2 py-1 rounded-full"></i>
+                    </button>
+                    <button className="carousel-control-next text-black text-2xl" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+                        <i className="bi bi-chevron-right bg-[#ffffffc4] px-2 py-1 rounded-full"></i>
+                    </button>
+                    </div>
+
+                    <div>
+                        {/* Render the current image */}
+
+                    </div>
                     <h2 className="my-4 text-lg">About this Service</h2>
                     <p className="text-justify text-sm leading-7">{service?.description}</p>
                     <hr className="my-5" />
-                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                    <div className="grid grid-cols-2 gap-4 ">
                         <div>
                         <h1 className="text-gray-500 font-semibold text-lg my-2">Category:</h1>
                         <p className="text-sm">{service?.category}</p>
@@ -141,7 +149,7 @@ export default function ServicePage({ match } ) {
                         <h1 className="text-gray-500 font-semibold text-lg my-2">Skills:</h1>
                         <ul>
                             {skills.map((skill, index) => (
-                            <li className="my-1 text-sm list-disc" key={index}>
+                            <li className="my-1 text-sm  list-none" key={index}>
                                 {skill}
                             </li>
                             ))}
@@ -149,13 +157,13 @@ export default function ServicePage({ match } ) {
                         </div>
                     </div>
                     </div>
-                    <div className="mt-10">
+                    <div className="mt-5 px-3">
                     <h1 className="font-semibold text-2xl">About the Seller</h1>
-                    <div className="flex my-5 items-center">
+                    <div className="flex my-2  justify-between xs:justify-normal items-center">
                         {user?.photo ? (
                         <Link to={`/profile/${user.id}`}>
                             <img
-                                className="inline-block mr-5 h-[150px] w-[150px] rounded-full ring-2 ring-white"
+                                className="inline-block mr-5 h-[150px] w-[150px] object-cover rounded-full ring-2 ring-white"
                                 src={`http://localhost:8000/storage/${user?.photo}`}
                                 alt="profile picture"
                             />
@@ -164,57 +172,57 @@ export default function ServicePage({ match } ) {
                         <Link to={`/profile/${user.id}`}>
                             <img
                                 src={img1}
-                                className="inline-block mr-5 h-[150px] w-[150px] rounded-full ring-2 ring-white"
+                                className="inline-block mr-5 h-[80px] w-[80px] rounded-full ring-2 ring-white"
                                 alt=""
                             />
                         </Link>
                         )}
-                        <div className="ml-20">
+                        <div className="lg:ml-20 ml-10">
                         <Link to={`/profile/${user.id}`}><h2 className="font-semibold text-xl">{freelancer?.displayed_name}</h2></Link>
-                        <p className="mt-6">{freelancer?.category}</p>
+                        <p className="my-3">{freelancer?.category}</p>
                         {
                         authuser?.freelancer?.id == service?.freelancer_id ?
                         <></>
                         : 
-                        <button className="rounded-full bg-cyan-700 px-5 py-2 font-semibold text-white mt-6 hover:bg-cyan-500 transition-all delay-100">
+                        <button type='button' onClick={() => setShowChatbox(true)} className="rounded-full bg-cyan-700 px-3 py-2 font-semibold text-white  hover:bg-cyan-500 transition-all delay-100">
                             Contact me
                         </button>
                         }
                         </div>
                     </div>
                     </div>
-                    <div className="border border-gray-300 p-5 mt-10">
-                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                    <div className="border bg-white border-gray-300 p-4 mt-10">
+                    <div className="grid grid-cols-1  gap-4 xs:grid-cols-2">
                         {user?.countries ? (
                         <div>
                             <h1>From:</h1>
-                            <p className="text-[#62646a] text-lg font-semibold">{user?.countries}</p>
+                            <p className="text-[#62646a] md:text-lg text-sm font-semibold">{user?.countries}</p>
                         </div>
                         ) : (
                         <></>
                         )}
                         <div>
                         <h1>Member Since:</h1>
-                        <p className="text-[#62646a] text-lg font-semibold">
+                        <p className="text-[#62646a] md:text-lg text-sm font-semibold">
                             {user?.created_at ? formatDate(user.created_at) : 'N/A'}
                         </p>
                         </div>
                         {user?.Language ? (
                         <div>
                             <h1>Language:</h1>
-                            <p className="text-[#62646a] text-lg font-semibold">{user?.Language}</p>
+                            <p className="text-[#62646a] md:text-lg text-sm font-semibold">{user?.Language}</p>
                         </div>
                         ) : (
                         <></>
                         )}
                         <div>
                         <h1>Email:</h1>
-                        <p className="text-[#62646a] text-lg font-semibold">{user?.email}</p>
+                        <p className="text-[#62646a] md:text-lg text-sm font-semibold">{user?.email}</p>
                         </div>
                         {freelancer?.first_name || freelancer?.last_name ? (
                         <div>
                             <h1 className="text-[#4c4c4d]">Name:</h1>
-                            <p className="text-[#62646a] text-lg font-semibold">
+                            <p className="text-[#62646a] md:text-lg text-sm font-semibold">
                             {freelancer?.first_name} {freelancer?.last_name}
                             </p>
                         </div>
@@ -222,7 +230,7 @@ export default function ServicePage({ match } ) {
                         <></>
                         )}
                     </div>
-                    {user?.description !== "null" ? (
+                    {user?.description != null ? (
                         <>
                         <hr className="my-10" />
                         <div>
@@ -236,11 +244,9 @@ export default function ServicePage({ match } ) {
 
                     
                 </div>
-                    <div className="absolute bottom-0 right-0">
-                    <ChatBox receiverId={receiverId} />
-                    </div>
-                <div className="col-span-4">
-                    <div className="border border-gray-300 p-8">
+
+                <div className="lg:col-span-2  col-span-5">
+                    <div className="border bg-white border-gray-300 p-4">
                     <div className="flex text-base font-semibold justify-between">
                         <p>{service?.offer_name}</p>
                         <p>{service?.price ? <span>${service.price}</span> : <></>}</p>
@@ -267,18 +273,35 @@ export default function ServicePage({ match } ) {
                         <Link
                             to={`/request/service/${id}`}
                             type="button"
-                            className="mt-6 py-3 w-full px-4 inline-flex items-center justify-between gap-2 rounded-md border-2 border-gray-900 font-semibold text-gray-800 hover:text-white hover:bg-gray-800 hover:border-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-800 focus:ring-offset-2 transition-all text-sm dark:hover:bg-gray-900 dark:border-gray-900 dark:hover:border-gray-900 dark:text-white dark:focus:ring-gray-900 dark:focus:ring-offset-gray-800"
+                            className="mt-6 py-3 w-full px-4 inline-flex items-center justify-between gap-2 rounded-md border-2 border-gray-900 font-semibold  text-gray-800 hover:text-white hover:bg-gray-800 hover:border-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-800 focus:ring-offset-2 transition-all text-sm dark:hover:bg-gray-900 dark:border-gray-900 dark:hover:border-gray-900 dark:text-white dark:focus:ring-gray-900 dark:focus:ring-offset-gray-800"
                         >
                             <span className="flex-grow text-center">Button</span>
                             <span className="text-right">
                             <i className="bi bi-arrow-right"></i>
                             </span>
                         </Link> 
-                        
-                        
                     }
-            
+
                     </div>
+                    {showChatbox &&  (
+                    <div className=" sticky top-[420px] 2xl:ml-[180px]">
+                    <ChatBox src={`${user?.photo ? `http://localhost:8000/storage/${user?.photo}`: img1}`} onClickReduce={handleReduce} onClickClose={() => setShowChatbox(false)} username={freelancer.displayed_name} receiverId={receiverId} />
+                    </div>
+                    )}
+                    {
+                        reduceChatbox && (
+                            <div className=" sticky top-[850px] text-right left-[100px]">
+                            <button type='button' onClick={handleOpen}>
+                               
+                               <div className='flex items-center bg-[#2592c59a] p-2 rounded-full'>
+                               <img src={`${user?.photo ? `http://localhost:8000/storage/${user?.photo}`: img1}`}className='w-12 h-12 mr-3  rounded-full' alt="" /> 
+                                <p className=' font-semibold text-sm text-white'> Message {freelancer?.displayed_name}</p>
+                               </div>
+                            </button>
+                        </div>
+                        )
+                    }
+
                 </div>
             </div>
         </div>

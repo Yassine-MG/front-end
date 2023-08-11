@@ -20,7 +20,7 @@ const Navbar = ({ prop }) => {
         const id = sessionUser?.id;
         http.get(`/edit/${id}`,{headers: {"Authorization": `Bearer ${token}`}})
         .then((response) => {
-            setUser(response.data.user)
+            setUser(response.data.user);
         }).catch((error) => {
             // console.log(error.message);
         });
@@ -244,8 +244,14 @@ const Navbar = ({ prop }) => {
             open ? 'left-0' : 'left-[-100%]'
         }`}
         >
-        <div className='py-5 flex flex-col'>
+
+
+        <div className=' flex flex-col'>
             {document.cookie.match('access_token') ? (
+                <>
+                <div className='flex items-center justify-center'>
+                    <img className='w-24 h-24 rounded-full object-cover hover:' src={prop} alt='Rounded avatar'></img>
+                </div>
             <Fragment>
                 {sellerMode && user?.role == "Freelancer"  ? (
                 <Fragment>
@@ -255,7 +261,7 @@ const Navbar = ({ prop }) => {
                     </Link>
                     </li>
                     <li>
-                    <Link to={'/profile/gigs'} onClick={() => setOpen(!open)} className='py-7 px-3 inline-block'>
+                    <Link to={'/profile/gigs'} onClick={() => setOpen(!open)} className='px-3 inline-block'>
                         Gigs
                     </Link>
                     </li>
@@ -267,6 +273,11 @@ const Navbar = ({ prop }) => {
                 </Fragment>
                 ) : (
                 <Fragment>
+                    <li>
+                    <Link to={'/profile/orders/waiting/list'} onClick={() => setOpen(!open)} className='px-3 inline-block'>
+                        Waiting List Order
+                    </Link>
+                    </li>
                     <li>
                     <Link to={'/'} onClick={() => setOpen(!open)} className='py-7 px-3 inline-block'>
                         Home
@@ -288,6 +299,7 @@ const Navbar = ({ prop }) => {
                 Log Out
                 </button>
             </Fragment>
+            </>
              ) : ( 
             <>
                  <li>
@@ -318,11 +330,11 @@ const Navbar = ({ prop }) => {
              )} 
         </div>
         {/* Switch Mode */}
-        <div className="mt-5 px-4">
+        <div className="mt-3 mx-3">
             {
                document.cookie.match('access_token') && user?.role == "Freelancer" ?
             <button
-            className="bg-blue-500 text-white py-2 px-4 rounded-full w-full"
+            className="bg-blue-500  text-white py-2 px-4 rounded-lg "
             onClick={handleSwitchMode}
             >
             {sellerMode ? 'Switch to buyer' : 'Switch to seller'}

@@ -87,7 +87,7 @@ function App() {
     }
 
     }, []);
-  
+    console.log();
   return (
     <div id="navbar-container" className='bg-slate-50'>
       <Navbar prop={user?.photo == null ? img1 :`http://localhost:8000/storage/${user?.photo}`}></Navbar>
@@ -101,28 +101,24 @@ function App() {
                 <Route path='/profile' element={<Profile/>}/> 
               )
             } 
-            <Route path='/modif' element={<EditProfile/>}/>
-            {
-            role !== 'freelancer' && (
-              <Route path='/register/freelancers' element={<FreelancerRegistration/>}/> 
-              )
-            }
+            <Route path='/modif' element={document.cookie.match("access_token") ?<EditProfile/>:<Error/>}/>
+            <Route path='/register/freelancers' element={document.cookie.match("access_token") && role !== "Freelancer"?<FreelancerRegistration/>:<Error/>}/> 
             <Route path='/error' element={<Error/>}/> 
-            <Route path='/add/service/overview' element={<OverviewForm/>}/> 
-            <Route path='/add/service/priceform' element={<PriceFrom/>}/> 
-            <Route path='/add/service/fileform' element={<FileForm/>}/> 
+            <Route path='/add/service/overview' element={document.cookie.match("access_token") && role === "Freelancer"?<OverviewForm/> : <Error/>}/> 
+            <Route path='/add/service/priceform' element={document.cookie.match("access_token") && role === "Freelancer"?<PriceFrom/> : <Error/>}/> 
+            <Route path='/add/service/fileform' element={document.cookie.match("access_token") && role === "Freelancer"?<FileForm/> : <Error/>}/> 
             <Route exact path="/service/:id" element={<ServicePage/>} />
             <Route exact path="/service/list" element={<ServiceList/>} />
-            <Route path='/edit/service/overview/:id' element={<EditOverviewForm/>}/> 
-            <Route path='/edit/service/price/:id' element={<EditPriceForm/>}/> 
-            <Route path='/edit/service/file/:id' element={<EditFileForm/>}/> 
-            <Route path='/request/service/:id' element={<RequirementService/>}/> 
+            <Route path='/edit/service/overview/:id' element={document.cookie.match("access_token") && role === "Freelancer"?<EditOverviewForm/>:<Error/>}/> 
+            <Route path='/edit/service/price/:id' element={document.cookie.match("access_token") && role === "Freelancer"?<EditPriceForm/>:<Error/>}/> 
+            <Route path='/edit/service/file/:id' element={document.cookie.match("access_token") && role === "Freelancer"?<EditFileForm/>:<Error/>}/> 
+            <Route path='/request/service/:id' element={document.cookie.match("access_token")?<RequirementService/>:<Error/>}/> 
             <Route path='/profile/:id' element={<ProfileUser/>}/> 
-            <Route path='/profile/orders/waiting/list' element={<OrdersWaitingList/>}/> 
-            <Route path='/profile/orders' element={<Orders/>}/> 
-            <Route path='/profile/gigs' element={<Gigs/>}/> 
-            <Route path='/profile/clientorder' element={<ClientOrder/>}/> 
-            <Route path='/list/messages' element={<ChatComponent/>}/> 
+            <Route path='/profile/orders/waiting/list' element={document.cookie.match("access_token")&& role === "Freelancer"?<OrdersWaitingList/>:<Error/>}/> 
+            <Route path='/profile/orders' element={document.cookie.match("access_token") && role === "Freelancer"?<Orders/>:<Error/>}/> 
+            <Route path='/profile/gigs' element={document.cookie.match("access_token") && role === "Freelancer" ?<Gigs/>:<Error/>}/> 
+            <Route path='/profile/clientorder' element={document.cookie.match("access_token") ?<ClientOrder/>:<Error/>}/> 
+            <Route path='/list/messages' element={document.cookie.match("access_token") ?<ChatComponent/>:<Error/>}/> 
             <Route path='/reset/password' element={<ResetPassword/>}/> 
             <Route path='/reset/password/email' element={<ResetPasswordByEmail/>}/> 
 

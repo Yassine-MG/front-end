@@ -108,14 +108,14 @@ export default function ServicePage({ match } ) {
                         )}
                         <h2 className="font-semibold text-xl">{freelancer?.displayed_name}</h2>
                     </Link>
-                    <div id="carouselExample" className="carousel slide">
-                    <div className="carousel-inner w-[100%] h-[35vh] md:h-[50vh]  object-cover">
+                    <div id="carouselExample" className="relative carousel slide">
+                    <div className="carousel-inner w-[100%] h-fit md:h-[50vh]  object-cover">
                         {images.map((image, index) => (
                         <div key={index} className={`carousel-item bg-transparent ${index === 0 ? 'active' : ''}`}>
                             <img src={`http://localhost:8000${image}`} className="d-block  w-[100%] h-[35vh] md:h-[50vh] object-cover " alt={`image ${index + 1}`} />
                         </div>
                         ))}
-                        <div className="carousel-item w-[100%] h-[35vh] md:h-[50vh] bg-transparent">
+                        <div className="carousel-item w-[100%] h-fit md:h-[50vh] bg-transparent">
                         {service?.video ? (
                             <video className=" w-full h-full " controls>
                             <source src={`http://localhost:8000${service?.video}`} type="video/mp4" />
@@ -125,12 +125,17 @@ export default function ServicePage({ match } ) {
                         )}
                         </div>
                     </div>
-                    <button className="carousel-control-prev text-black text-2xl " type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+                  
+                    <div className="absolute left-10 top-[50%]">
+                    <button className="carousel-control-prev text-black  md:text-2xl " type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
                         <i className="bi bi-chevron-left bg-[#ffffffc4] px-2 py-1 rounded-full"></i>
                     </button>
-                    <button className="carousel-control-next text-black text-2xl" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+                    </div>  
+                    <div className="absolute right-10 top-[50%] ">
+                    <button className="carousel-control-next text-black md:text-2xl" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
                         <i className="bi bi-chevron-right bg-[#ffffffc4] px-2 py-1 rounded-full"></i>
                     </button>
+                    </div>
                     </div>
 
                     <div>
@@ -275,7 +280,7 @@ export default function ServicePage({ match } ) {
                             type="button"
                             className="mt-6 py-3 w-full px-4 inline-flex items-center justify-between gap-2 rounded-md border-2 border-gray-900 font-semibold  text-gray-800 hover:text-white hover:bg-gray-800 hover:border-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-800 focus:ring-offset-2 transition-all text-sm dark:hover:bg-gray-900 dark:border-gray-900 dark:hover:border-gray-900 dark:text-white dark:focus:ring-gray-900 dark:focus:ring-offset-gray-800"
                         >
-                            <span className="flex-grow text-center">Button</span>
+                            <span className="flex-grow text-center">Continue (${service.price})</span>
                             <span className="text-right">
                             <i className="bi bi-arrow-right"></i>
                             </span>
@@ -284,13 +289,13 @@ export default function ServicePage({ match } ) {
 
                     </div>
                     {showChatbox &&  (
-                    <div className=" sticky top-[420px] 2xl:ml-[180px]">
+                    <div className=" flex justify-center my-5 md:sticky top-[420px] 2xl:ml-[180px]">
                     <ChatBox src={`${user?.photo ? `http://localhost:8000/storage/${user?.photo}`: img1}`} onClickReduce={handleReduce} onClickClose={() => setShowChatbox(false)} username={freelancer.displayed_name} receiverId={receiverId} />
                     </div>
                     )}
                     {
                         reduceChatbox && (
-                            <div className=" sticky top-[850px] text-right left-[100px]">
+                            <div className=" flex justify-center my-5 md:sticky top-[850px] text-right left-[100px]">
                             <button type='button' onClick={handleOpen}>
                                
                                <div className='flex items-center bg-[#2592c59a] p-2 rounded-full'>

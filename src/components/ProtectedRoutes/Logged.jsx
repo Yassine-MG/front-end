@@ -2,6 +2,6 @@ import React from 'react'
 
 export default function Logged() {
   return (
-    <div>your are already logged</div>
+    <div className=' min-h-screen my-20'>your are already logged</div>
   )
 }

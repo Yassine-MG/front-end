@@ -160,7 +160,7 @@ export default function Orders() {
             <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
                 <div className="inline-block min-w-full py-2 sm:px-6 lg:px-8">
                 <div className="overflow-hidden">
-                <h1 className='mx-5 text-3xl my-5'>Orders List</h1>
+                <h1 className='mx-5 text-3xl my-3'>Orders List</h1>
                     <table className="min-w-full text-left text-sm font-light">
                     <thead className="border-b font-medium dark:border-neutral-500">
                         <tr>
@@ -281,7 +281,7 @@ export default function Orders() {
                                                 : 
                                                 <h3 onClick={() => { const fileInput = document.getElementById("files");
                                                 fileInput.click();}} 
-                                                className='titlei cursor-pointer border-pink-500 0 border-2 font-semibold  duration-500 ease-in-out  h-10 transition-all border-l-0  rounded-r-3xl'> Please Insert Your file </h3>}
+                                                className='titlei cursor-pointer border-pink-500 0 border-2 border-l-0 border-y-2 border-r-2 font-semibold flex items-center duration-500 ease-in-out h-10 px-2 transition-all rounded-r-3xl'> Please Insert Your file </h3>}
                                     </div>
                                     <div className='mx-5'>
                                             <input

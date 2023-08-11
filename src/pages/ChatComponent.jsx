@@ -289,7 +289,7 @@ const ChatComponent = () => {
                                     <img
                                         src={`${message.sender.photo ?` http://localhost:8000/storage/${message.sender.photo}` : img1}`} 
                                         alt="sqfsfq"
-                                        className="w-8 h-8 rounded-full object-cover"
+                                        className="w-8 h-8  rounded-full object-cover"
                                     />
 
                                     ) : null}
@@ -316,7 +316,7 @@ const ChatComponent = () => {
                                     <img
                                     src={`${message.sender.photo ?` http://localhost:8000/storage/${message.sender.photo}` : img1}`} 
                                         alt=""
-                                        className="w-8 h-8 rounded-full"
+                                        className="w-8 h-8 object-cover rounded-full"
                                     />
                                     ) : null}
                                 </div>
@@ -475,7 +475,7 @@ const ChatComponent = () => {
                                         <img
                                         src={`${message.sender.photo ?` http://localhost:8000/storage/${message.sender.photo}` : img1}`} 
                                             alt=""
-                                            className="w-8 h-8 rounded-full"
+                                            className="w-8 h-8 object-cover rounded-full"
                                         />
                                         ) : null}
                                     </div>

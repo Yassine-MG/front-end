@@ -131,7 +131,7 @@ export default function OrdersWaitingList() {
         <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
             <div className="inline-block min-w-full py-2 sm:px-6 lg:px-8">
             <div className="overflow-hidden">
-              <h1 className='mx-5 text-3xl my-5'>Waiting List</h1>
+              <h1 className='mx-5 text-3xl my-4'>Waiting List</h1>
               <hr />
                 <table className="min-w-full text-left text-sm font-light">
                 <thead className="border-b font-medium dark:border-neutral-500">

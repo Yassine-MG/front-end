@@ -2,37 +2,31 @@ import React, {useState} from 'react'
 import http from '../http'
 import { useNavigate } from 'react-router-dom';
 import Logged from '../components/ProtectedRoutes/Logged';
+import Error from '../components/ProtectedRoutes/Error';
 
 export default function Register() {
   const navigate = useNavigate();
   const[inputs,setInputs] = useState({});
   const [error, setError] = useState(null);
-  const [emailErrors,setEmailErrors] = useState(null);
   const handleChange = (event)=>{
     const name = event.target.name;
     const value = event.target.value;
-    console.log(name);
-    console.log(value);
     setInputs(values=>({...values,[name]:value}))
   }
 
   const submitForm = () =>{
     http.post('/register',inputs).then((res)=>{
-      console.log(res);
+      // console.log(res);
       if(res.data.status === 200){
         navigate('/');
         setError(null);
       }else if(res.data.status === 204){
-        const errors = res;
-        console.log(errors);
-        const emailError =  errors.email || [];
-        setEmailErrors(emailError);
-        const passwordErrors = errors.password || [];
-        setError(passwordErrors);
+        console.log(res.data.errors);
+        setError(res.data.errors);
       }
     })
     .catch((error) => {
-        setError("Something went wrong.");
+        console.log(error)
     });
   }
   if(!document.cookie.match('access_token')){
@@ -65,6 +59,9 @@ export default function Register() {
                     required
                     className="block w-full rounded-md border-1 border-gray-300  focus:border-[#86d2f4]  px-3 py-2 text-gray-900 shadow-sm  outline-none placeholder:text-gray-400 focus:ring-2 focus:ring-inset  sm:text-sm sm:leading-6"
                   />
+                  {
+                    error?.name ? <p className=' text-red-500 font-bold text-xs'>*{error?.name}</p> : <></>
+                  }
                 </div>
               </div>
               <div>
@@ -73,9 +70,6 @@ export default function Register() {
                 </label>
                 <div className="mt-2">
                 <ul>
-                      {emailErrors && emailErrors.map((msg) => (
-                        <li key={msg} className="text-red-500">{msg}</li>
-                        ))}
                     </ul>
                   <input
                     id="email"
@@ -87,6 +81,9 @@ export default function Register() {
                     required
                     className="block w-full  border-1 border-gray-300  focus:border-[#86d2f4]  px-3 py-2 rounded-md outline-none text-gray-900 shadow-sm  placeholder:text-gray-400 focus:ring-2 focus:ring-inset  sm:text-sm sm:leading-6"
                   />
+                  {
+                    error?.email ? <p className=' text-red-500 font-bold text-xs'>*{error?.email}</p> : <></>
+                  }
                 </div>
               </div>
               <div>
@@ -96,12 +93,6 @@ export default function Register() {
                   </label>
                 </div>
                 <div className="mt-2">
-                <ul>
-                    {Array.isArray(error) && error.map((msg) => (
-                      <li key={msg} className="text-red-500">{msg}</li>
-                    ))}
-                  </ul>
-
                   <input
                     id="password"
                     name="password"
@@ -112,11 +103,14 @@ export default function Register() {
                     required 
                     className="block w-full p-3 rounded-md border-1 border-gray-300  focus:border-[#86d2f4]  py-2 text-gray-900 outline-none shadow-sm  placeholder:text-gray-400 focus:ring-2 focus:ring-inset  sm:text-sm sm:leading-6"
                   />
+                  {
+                    error?.password ? <p className=' text-red-500 font-bold text-xs'>*{error?.password}</p> : <></>
+                  }
                 </div>
               </div>
               <div>
                 <div className="flex items-center justify-between">
-                  <label htmlFor="password" className="block text-sm font-medium leading-6 text-gray-900">
+                  <label htmlFor="password_confirmation" className="block text-sm font-medium leading-6 text-gray-900">
                     Password Confirmation
                   </label>
                 </div>
@@ -149,6 +143,6 @@ export default function Register() {
       </div>
     )
   }else{
-    return(<Logged/>)
+    return(<Error/>)
   }
 }

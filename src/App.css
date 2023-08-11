@@ -179,3 +179,19 @@ input::-webkit-inner-spin-button {
   transform: scaleX(1);
   transform-origin: bottom left;
 }
+
+.link-error:hover{
+  background-color: #86d2f4;
+  color: white;
+}
+.link-error{
+  background-color: #fff;
+  display: inline-block;
+  font-weight: 500;
+  margin-top: 10px;
+  color: #86d2f4; 
+  padding: 10px 10px;
+  border-radius: 5px;
+  border: 1px #86d2f4 solid;
+  transition: all ease-in 0.2s;
+}

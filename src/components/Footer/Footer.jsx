@@ -18,7 +18,7 @@ export default function Footer() {
     <hr className='border-gray-700 md:py-10 py-5 ' />   
     <div className='container w-[80%] text-center py-3 mx-auto'>
       <div className='lg:flex justify-between'>
-        <p className=' font-semibold text-white md:mt-0'> ©2023 Made By Yassine Mghazli  </p>
+        <p className=' font-semibold text-white my-4 md:mt-0'> ©2023 Made By Yassine Mghazli  </p>
         <div className='text-white text-2xl flex justify-between'>
           <Link><i className="bi bi-linkedin mx-2 md:mx-5"></i></Link>
           <Link><i className="bi bi-github mx-2 md:mx-5"></i></Link>
